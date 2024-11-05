@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign up</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 300;
+      font-family: "Roboto", sans-serif;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 800px;
+      display: flex;
+      position: relative;
+    }
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #555;
+    }
+    .left {
+      width: 50%;
+      padding: 20px;
+      position: relative;
+    }
+    .right {
+      width: 50%;
+      padding: 20px;
+    }
+    .left img {
+      width: 400px;
+      margin-top: -20px;
+      margin-left: -20px;
+      margin-bottom: -24px;
+      height: 560px;
+    }
+    .right img {
+      max-width: 100px;
+      margin-bottom: 10px;
+      display: block;
+      margin: 0 auto; /* Center horizontally */
+    }
+    .right h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .right form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .right input[type="text"],
+    .right input[type="password"] {
+      width: calc(100% - 22px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+    .right input[type="checkbox"] {
+      margin-right: 5px;
+    }
+    .right input[type="submit"] {
+      background-color: #BF6D4E;
+      color: #fff;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      width: calc(100% - 22px);
+    }
+    .right input[type="submit"]:hover {
+      background-color: #555;
+    }
+    .right a {
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .right a:hover {
+      text-decoration: underline;
+    }
+    .error-message {
+      visibility: hidden;
+      font-size: 12px;
+      color: red;
+    }
+    .has-error .error-message {
+      visibility: visible;
+    }
+    .error {
+      margin-top: -15px;
+      margin-bottom: 10px;
+    }
+    .form-container {
+      background: none;
+      padding: 20px;
+    }
+    .form-container table {
+      width: 100%;
+    }
+    .form-container td {
+      padding: 10px;
+    }
+    .signup-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+	    color: black;
+      margin-bottom: -5px;
+    }
+	.signup-link a{
+		color: #BF6D4E;
+	}
+    @media (max-width: 768px) {
+      .form-container {
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+    }
+    .terms {
+      font-size: 12px;
+      margin-bottom: 10px;
+      margin-top: -12px;
+    }
+    .terms a {
+      color: #BF6D4E;
+      font-size: 12px;
+      text-decoration: none;
+    }
+    .terms a:hover {
+      text-decoration: underline;
+    }  
+  </style>
+  <script>
+    function closePage() {
+      if (document.referrer.includes('index.jsp')) {
+        window.location.href = 'index.jsp'; 
+      } else if (document.referrer.includes('menu.jsp')) {
+        window.location.href = 'menu.jsp'; 
+      } else if (document.referrer.includes('contact.jsp')) {
+        window.location.href = 'contact.jsp'; 
+      } else if (document.referrer.includes('about.jsp')) {
+        window.location.href = 'about.jsp'; 
+      } else {
+        window.location.href = 'index.jsp'; 
+      }
+    }
+
+    
+    function validateForm() {
+      var first = document.getElementById('first').value.trim();
+      var last = document.getElementById('last').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var password = document.getElementById('password').value.trim();
+      var confirm = document.getElementById('confirm').value.trim();
+      var mobile = document.getElementById('mobile').value.trim();
+
+      var valid = true;
+
+      if (first === "") {
+        document.getElementById('errFirst').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errFirst').classList.remove('has-error');
+      }
+
+      if (last === "") {
+        document.getElementById('errLast').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errLast').classList.remove('has-error');
+      }
+
+      if (email === "" || !validateEmail(email)) {
+        document.getElementById('errEmail').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errEmail').classList.remove('has-error');
+      }
+
+      if (password === "" || !validatePassword(password)) {
+        document.getElementById('errPassword').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errPassword').classList.remove('has-error');
+      }
+
+      if (confirm === "" || confirm !== password) {
+        document.getElementById('errConfirm').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errConfirm').classList.remove('has-error');
+      }
+
+      if (mobile === "" || !validateMobile(mobile)) {
+        document.getElementById('errMobile').classList.add('has-error');
+        valid = false;
+      } else {
+        document.getElementById('errMobile').classList.remove('has-error');
+      }
+
+      return valid;
+    }
+
+    function validateEmail(email) {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
+    }
+
+    function validatePassword(password) {
+      var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,}$/;
+      return re.test(password);
+    }
+
+    function validateMobile(mobile) {
+      var re = /^\d{10}$/;
+      return re.test(mobile);
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="close-button" onclick="closePage()">&times;</div>
+    <div class="left">
+      <img src="images/register.jpg" alt="Register image" />
+    </div>
+    <div class="right">
+      <img src="images/logo.png" alt="Your Logo" style="max-width: 100px; margin-bottom: 10px;" />
+      <form method="post" action="reg.jsp" onsubmit="return validateForm()">
+        <input type="text" id="first" name="first" placeholder="First Name" />
+        <div id="errFirst" class="error">
+          <span class="error-message">Please enter your first name!</span>
+        </div>
+
+        <input type="text" id="last" name="last" placeholder="Last Name" />
+        <div id="errLast" class="error">
+          <span class="error-message">Please enter your last name!</span>
+        </div>
+
+        <input type="text" id="email" name="email" placeholder="Email" />
+        <div id="errEmail" class="error">
+          <span class="error-message">Enter a valid email address!</span>
+        </div>
+
+        <input type="password" id="password" name="password" placeholder="Password" />
+        <div id="errPassword" class="error">
+          <span class="error-message">Pwd: 6+ chars, 1 number, mix of upper/lowercase, special char.</span>
+        </div>
+
+        <input type="password" id="confirm" name="confirm" placeholder="Confirm Password" />
+        <div id="errConfirm" class="error">
+          <span class="error-message">Your passwords don't match!</span>
+        </div>
+
+        <input type="text" id="mobile" name="mobile" placeholder="Mobile Number" />
+        <div id="errMobile" class="error">
+          <span class="error-message">Please enter correct mobile number!</span>
+        </div>
+
+        <div class="terms">
+          By creating an account, I accept the <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>
+        </div>
+
+        <input type="submit" value="Sign up" />
+      </form>
+      <div class="signup-link">
+        Already have an account? <a href="log.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

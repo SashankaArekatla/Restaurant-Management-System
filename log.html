@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="ISO-8859-1">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.4.2/css/all.css">
+  <title>Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 300;
+      font-family: "Roboto", sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 800px;
+      display: flex;
+      position: relative;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #555;
+      z-index: 10;
+    }
+
+    .left {
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 40%;
+      right: 30px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #ccc;
+      z-index: 1;
+    }
+    .toggle-password:hover {
+      color: #555;
+    }
+
+    .left img {
+      width: 400px;
+      height: 560px;
+      margin: -20px 0;
+    }
+
+    .right {
+      width: 50%;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .right img {
+      max-width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .right h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #BF6D4E;
+    }
+
+    .right form {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .right input[type="text"],
+    .right input[type="password"] {
+      width: calc(100% - 22px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .right input[type="submit"] {
+      background-color: #BF6D4E;
+      color: #fff;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      width: calc(100% - 22px);
+      transition: background-color 0.3s;
+    }
+
+    .right input[type="submit"]:hover {
+      background-color: #555;
+    }
+
+    .right a {
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .right a:hover {
+      text-decoration: underline;
+    }
+
+    .signup-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: black;
+    }
+
+    .signup-link a {
+      color: #BF6D4E;
+    }
+
+    .terms {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .terms a {
+      color: #BF6D4E;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-50px);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .error-icon {
+      font-size: 50px;
+      color: #BF6D4E;
+      margin-bottom: 10px;
+    }
+
+    .error-message {
+      font-size: 18px;
+      color: #BF6D4E;
+    }
+
+    .modal-content {
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="close-button" onclick="closePage()">&times;</div>
+    <div class="left">
+      <img src="images/login.jpg" alt="Register image" />
+    </div>
+    <div class="right">
+      <img src="images/logo.png" alt="Your Logo" />
+      <h1>Welcome back</h1>
+      <form action="retrieve.jsp" method="post">
+        <input type="text" name="user" placeholder="Enter mobile number">
+        <div style="position: relative;">
+          <input type="password" name="pass" placeholder="Enter password" id="passwordField">
+          <span class="toggle-password" onclick="togglePasswordVisibility()">
+            <i class="fa-regular fa-eye-slash"></i>
+          </span>
+        </div>
+        <div class="terms">
+          By clicking on Login, I accept the <a href="#">Terms & Conditions</a> & <a href="#">Privacy Policy</a>
+        </div>
+        <input type="submit" value="Login">
+      </form>
+      <div class="signup-link">
+        Don't have an account? <a href="register.html">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="errorModal" class="modal">
+    <div class="modal-content">
+      <span class="close"><i class="fa-regular fa-xmark"></i></span>
+      <div class="error-icon"><i class="fa-regular fa-triangle-exclamation"></i></div>
+      <p id="errorMessage" class="error-message"></p>
+    </div>
+  </div>
+
+  <script>
+    function closePage() {
+      if (document.referrer.includes('index.jsp')) {
+        window.location.href = 'index.jsp';
+      } else if (document.referrer.includes('menu.jsp')) {
+        window.location.href = 'menu.jsp';
+      } else if (document.referrer.includes('contact.jsp')) {
+        window.location.href = 'contact.jsp';
+      } else if (document.referrer.includes('about.jsp')) {
+        window.location.href = 'about.jsp';
+      } else {
+        window.location.href = 'index.jsp';
+      }
+    }
+
+    function showError() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const errorMessage = urlParams.get('error');
+      if (errorMessage) {
+        document.getElementById('errorMessage').textContent = decodeURIComponent(errorMessage.replace(/\+/g, ' '));
+        const modal = document.getElementById('errorModal');
+        const modalContent = document.querySelector('.modal-content');
+        modal.classList.add('show');
+        modalContent.classList.add('show');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const modal = document.getElementById('errorModal');
+      const modalContent = document.querySelector('.modal-content');
+      const span = document.getElementsByClassName('close')[0];
+
+      span.onclick = function () {
+        modal.classList.remove('show');
+        modalContent.classList.remove('show');
+        setTimeout(() => modal.style.display = 'none', 500);
+      }
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.classList.remove('show');
+          modalContent.classList.remove('show');
+          setTimeout(() => modal.style.display = 'none', 500);
+        }
+      }
+
+      showError();
+    });
+    function togglePasswordVisibility() {
+      const passwordField = document.getElementById('passwordField');
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      const eyeIcon = document.querySelector('.toggle-password i');
+      if (type === 'password') {
+        eyeIcon.classList.remove('fa-eye');
+        eyeIcon.classList.add('fa-eye-slash');
+      } else {
+        eyeIcon.classList.remove('fa-eye-slash');
+        eyeIcon.classList.add('fa-eye');
+      }
+    }
+  </script>
+</body>
+
+</html>
